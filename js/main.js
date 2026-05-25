@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (item) {
                         row.querySelector('.qty-value').textContent = item.quantity;
                         row.querySelector('.line-total').textContent = 
-                            '£' + (item.price * item.quantity).toFixed(2);
+                            (item.price * item.quantity).toFixed(2) + '€';
                     } else {
                         // Item was removed (quantity reached 0)
                         row.remove();

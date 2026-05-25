@@ -1,10 +1,18 @@
+# Production deployment for the eshop.
+# Usage on EC2:
+#   docker build -t eshop-app:local .
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# Runs on port 8081 (recipe site uses 8080).
+# MySQL data persists on /mnt/data/eshop-mysql.
+
 services:
   web:
-    image: php:8.2-apache
+    image: eshop-app:local
     ports:
-      - "8989:80"
+      - "8081:80"
     volumes:
-      - .:/var/www/html
+      - ./:/var/www/html
     depends_on:
       db:
         condition: service_healthy
@@ -13,37 +21,22 @@ services:
       - DB_NAME=eshop
       - DB_USER=root
       - DB_PASS=root
-    command: >
-      bash -c "docker-php-ext-install pdo pdo_mysql && apache2-foreground"
+    restart: unless-stopped
 
   db:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: eshop
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - /mnt/data/eshop-mysql:/var/lib/mysql
       - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ./sql/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
-  phpmyadmin:
-    image: phpmyadmin:latest
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-      PMA_USER: root
-      PMA_PASSWORD: root
-    depends_on:
-      db:
-        condition: service_healthy
-
-volumes:
-  db_data:
+      interval: 2s
+      timeout: 2s
+      retries: 5
+    restart: unless-stopped

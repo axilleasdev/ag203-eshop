@@ -90,7 +90,7 @@ foreach ($cartItems as $item) {
                                     <?php endif; ?>
                                     <span><?= htmlspecialchars($item['name']) ?></span>
                                 </td>
-                                <td>£<?= number_format($item['price'], 2) ?></td>
+                                <td><?= number_format($item['price'], 2) ?>€</td>
                                 <td class="cart-quantity">
                                     <!-- Quantity decrease button -->
                                     <button class="btn-qty" data-action="decrease" 
@@ -101,7 +101,7 @@ foreach ($cartItems as $item) {
                                             data-cart-id="<?= $item['cart_id'] ?>"
                                             data-max="<?= $item['stock'] ?>">+</button>
                                 </td>
-                                <td class="line-total">£<?= number_format($item['price'] * $item['quantity'], 2) ?></td>
+                                <td class="line-total"><?= number_format($item['price'] * $item['quantity'], 2) ?>€</td>
                                 <td>
                                     <button class="btn btn-danger remove-item" 
                                             data-cart-id="<?= $item['cart_id'] ?>">Remove</button>
@@ -113,7 +113,7 @@ foreach ($cartItems as $item) {
 
                 <!-- Cart total -->
                 <div class="cart-total">
-                    <strong>Total: £<span id="cart-total"><?= number_format($total, 2) ?></span></strong>
+                    <strong>Total: <span id="cart-total"><?= number_format($total, 2) ?></span>€</strong>
                 </div>
 
                 <div class="cart-actions">

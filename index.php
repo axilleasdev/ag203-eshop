@@ -71,7 +71,7 @@ $products = $stmt->fetchAll();
                             <div class="product-card-body">
                                 <h3><?= htmlspecialchars($product['name']) ?></h3>
                                 <p class="product-desc"><?= htmlspecialchars($product['description']) ?></p>
-                                <p class="product-price">£<?= number_format($product['price'], 2) ?></p>
+                                <p class="product-price"><?= number_format($product['price'], 2) ?>€</p>
                                 <p class="product-stock">
                                     <?= $product['stock'] > 0 ? "In Stock ({$product['stock']})" : '<span class="out-of-stock">Out of Stock</span>' ?>
                                 </p>
